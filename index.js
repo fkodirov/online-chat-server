@@ -2,12 +2,17 @@ const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
 const Message = require("./models/message-model");
-
+const cors = require("cors");
 const app = express();
 const server = http.createServer(app);
 const ws = new WebSocket.Server({ server });
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 server.listen(4000, () => {
   console.log("Server is running on port 4000");
@@ -16,11 +21,10 @@ server.listen(4000, () => {
 const tags = new Set();
 app.post("/messages", async (req, res) => {
   const { text, tags: messageTags } = req.body;
-
   try {
     const message = await Message.create({
       text,
-      tags: messageTags,
+      tags: messageTags.join(","),
       timestamp: new Date(),
     });
 
