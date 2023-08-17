@@ -61,7 +61,7 @@ app.get("/tags", async (req, res) => {
     const allTags = [];
 
     tags.forEach((item) => {
-      const tagsInItem = item.match(/#[a-z]+/gi);
+      const tagsInItem = item.match(/#[а-яёА-ЯЁa-zA-Z0-9_]+/gi);
       if (tagsInItem) {
         allTags.push(...tagsInItem);
       }
