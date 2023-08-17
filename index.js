@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
@@ -10,7 +11,7 @@ const ws = new WebSocket.Server({ server });
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
   })
 );
 
