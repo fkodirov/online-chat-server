@@ -19,12 +19,13 @@ server.listen(4000, () => {
 });
 
 app.post("/messages", async (req, res) => {
-  const { text, tags: messageTags } = req.body;
+  const { text, tags: messageTags, userId } = req.body;
   try {
     const message = await Message.create({
       text,
-      tags: messageTags.join(","),
+      tags: messageTags,
       timestamp: new Date(),
+      userId,
     });
 
     ws.clients.forEach((client) => {
@@ -64,7 +65,7 @@ app.get("/tags", async (req, res) => {
         allTags.push(...tagsInItem);
       }
     });
-    res.json(allTags);
+    res.json([...new Set(allTags)]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "An error occurred while fetching tags." });
